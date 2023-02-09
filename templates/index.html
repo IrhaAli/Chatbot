@@ -68,20 +68,20 @@
       userMessageDiv.classList.add("user-message");
       userMessageDiv.innerHTML = userMessage;
       chatHistory.appendChild(userMessageDiv);
-      textInput.value = "",
+      textInput.value = "";
 
-        fetch("/chat", {
-          method: "Post",
-          headers: { "Content-Type": "application/x-www-form-urlencoder" },
-          body: `text=${userMessage}`
+      fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoder" },
+        body: `text=${userMessage}`
+      })
+        .then(response => response.text())
+        .then(response => {
+          const chatbotMessageDiv = dcoument.createElement("div");
+          chatbotMessageDiv.classList.add("chat-message");
+          chatbotMessageDiv.classList.add("chatbot-message");
+          chatHistory.appendChild(chatbotMessageDiv);
         })
-          .then(response => response.text())
-          .then(response => {
-            const chatbotMessaageDiv = dcoument.createElement("div");
-            chatbotMessaageDiv.classList.add("chat-message");
-            chatbotMessaageDiv.classList.add("chatbot-message");
-            chatHistory.appendChild(chatbotMessaageDiv);
-          })
     })
   </script>
 </body>

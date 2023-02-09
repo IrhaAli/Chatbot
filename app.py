@@ -5,31 +5,31 @@ from flask import Flask, request, render_template
 app = Flask(__name__)
 
 pairs = [
-  [
-    r"My name is (.*)",
-    ["Hello %1, how are you today?, hey %1 %1 how's GHW going?"]
-],
     [
-    r"What is your name?",
-    ["My name is gene", "I'm the cutest GHW gene bot",
-        "It's nice to meet you I'm gene"]
-],
+        r"My name is (.*)",
+        ["Hello %1, how are you today?, hey %1 %1 how's GHW going?"]
+    ],
     [
-    r"sorry (.*)",
-    ["It's alright", "Never gonna give you up"]
-],
+        r"What is your name?",
+        ["My name is gene", "I'm the cutest GHW gene bot",
+         "It's nice to meet you I'm gene"]
+    ],
     [
-    r"Hey, I'm rick",
-    ["Go away", "I will give you up"]
-],
+        r"sorry (.*)",
+        ["It's alright", "Never gonna give you up"]
+    ],
     [
-    r"Quit",
-    ["Bye it was great talking to you", "See you soon"]
-],
-[
-    r"What categories are there in GHW?",
-    ["There are many categories and they can be found here"]
-],
+        r"Hey, I'm rick",
+        ["Go away", "I will give you up"]
+    ],
+    [
+        r"Quit",
+        ["Bye it was great talking to you", "See you soon"]
+    ],
+    [
+        r"What categories are there in GHW?",
+        ["There are many categories and they can be found here"]
+    ],
 ]
 
 chatbot = Chat(pairs, reflections)
