@@ -1,89 +1,92 @@
-<!DOCTYPE html>
 <html>
+  <head>
+    <title>ChatBot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <title>Chatbot</title>
-  <style>
-    #chat-container {
-      width: 500px;
-      margin: 0 auto;
-      text-align: center;
-    }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-    .chat-message {
-      border: 1px solid black;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-    }
+      #chatbox {
+        background-color: #eee;
+        border: 1px solid #333;
+        border-radius: 5px;
+        padding: 10px;
+        height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 20px;
+      }
 
-    .user-message {
-      text-align: left;
-      margin-left: 20px;
-      background-color: lightblue;
-    }
+      #input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        border: 1px solid #333;
+        border-radius: 5px;
+      }
 
-    .chatbot-message {
-      text-align: right;
-      margin-right: 20px;
-      background-color: lightgray;
-    }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 
-    #text-input {
-      width: 60%;
-      height: 30px;
-      font-size: 20px;
-      margin-top: 20px;
-    }
+      p {
+        margin: 0;
+        padding: 10px;
+      }
 
-    #submit-button {
-      width: 20%;
-      height: 40px;
-      font-size: 20px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
+      .user {
+        background-color: #ddd;
+        float: left;
+        clear: both;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        width: 80%;
+      }
 
-<body>
-  <div id="chat-container">
-    <div id="chat-history"></div>
-    <input type="text" id="text-input" placeholder="Enter your message here"></input>
-    <button id="submit-button">Send</button>
-  </div>
-
-  <script>
-    const chatHistory = document.getElementById("chat-history");
-    const textInput = document.getElementById("text-input");
-    const submitButton = document.getElementById("submit-button");
-
-    submitButton.addEventListener("click", function() {
-      const userMessage = textInput.value;
-
-      const userMessageDiv = document.createElement("div");
-      userMessageDiv.classList.add("chat-message");
-      userMessageDiv.classList.add("user-message");
-      userMessageDiv.innerHTML = userMessage;
-      chatHistory.appendChild(userMessageDiv);
-
-      textInput.value = "";
-
-      fetch("/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `text=${userMessage}`
-      })
-        .then(response => response.text())
-        .then(response => {
-          const chatbotMessageDiv = document.createElement("div");
-          chatbotMessageDiv.classList.add("chat-message");
-          chatbotMessageDiv.classList.add("chatbot-message");
-          chatbotMessageDiv.innerHTML = response;
-          chatHistory.appendChild(chatbotMessageDiv);
-        });
-    });
-  </script>
-</body>
-
+      .chatbot {
+        background-color: #fff;
+        float: right;
+        clear: both;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ChatBot</h1>
+    <div id="chatbox"></div>
+    <input id="input" type="text"/>
+    <button onclick="submitMessage()">Send</button>
+    <script>
+      function submitMessage() {
+        var input = document.getElementById("input").value;
+        document.getElementById("input").value = "";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/get?msg=" + input, true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+            var chatbox = document.getElementById("chatbox");
+            var response = xhr.responseText;
+            chatbox.innerHTML += "<p class='user'><b>User:</b> " + input + "</p>";
+            chatbox.innerHTML += "<p class='chatbot'><b>ChatBot:</b> " + response + "</p>";
+            chatbox.scrollTop = chatbox.scrollHeight;
+          }
+        }
+        xhr.send();
+      }
+    </script>
+  </body>
 </html>
