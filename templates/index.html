@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatbot</title>
   <style>
     #chat-container {
@@ -23,13 +21,13 @@
     .user-message {
       text-align: left;
       margin-left: 20px;
-      background-color: darkkhaki;
+      background-color: lightblue;
     }
 
     .chatbot-message {
       text-align: right;
       margin-right: 20px;
-      background-color: greenyellow;
+      background-color: lightgray;
     }
 
     #text-input {
@@ -42,7 +40,7 @@
     #submit-button {
       width: 20%;
       height: 40px;
-      font: 20px;
+      font-size: 20px;
       margin-top: 20px;
     }
   </style>
@@ -51,7 +49,7 @@
 <body>
   <div id="chat-container">
     <div id="chat-history"></div>
-    <input type="text" id="text-input" placeholder="Write your questions"></input>
+    <input type="text" id="text-input" placeholder="Enter your message here"></input>
     <button id="submit-button">Send</button>
   </div>
 
@@ -62,27 +60,29 @@
 
     submitButton.addEventListener("click", function() {
       const userMessage = textInput.value;
-      const userMessageDiv = document.createElement("div");
 
+      const userMessageDiv = document.createElement("div");
       userMessageDiv.classList.add("chat-message");
       userMessageDiv.classList.add("user-message");
       userMessageDiv.innerHTML = userMessage;
       chatHistory.appendChild(userMessageDiv);
+
       textInput.value = "";
 
       fetch("/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoder" },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `text=${userMessage}`
       })
         .then(response => response.text())
         .then(response => {
-          const chatbotMessageDiv = dcoument.createElement("div");
+          const chatbotMessageDiv = document.createElement("div");
           chatbotMessageDiv.classList.add("chat-message");
           chatbotMessageDiv.classList.add("chatbot-message");
+          chatbotMessageDiv.innerHTML = response;
           chatHistory.appendChild(chatbotMessageDiv);
-        })
-    })
+        });
+    });
   </script>
 </body>
 
